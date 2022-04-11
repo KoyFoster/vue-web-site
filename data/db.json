@@ -1,8 +1,29 @@
 {
   "users": [
     {
+      "id": 1,
       "name": "test",
       "password": "test"
+    }
+  ],
+  "games": [
+    {
+      "id": 1,
+      "name": "Sudoku",
+      "preview": "",
+      "desc": "[Description goes here]"
+    },
+    {
+      "id": 2,
+      "name": "Reaction",
+      "preview": "",
+      "desc": "[Description goes here]"
+    },
+    {
+      "id": 3,
+      "name": "Platformer",
+      "preview": "",
+      "desc": "[Description goes here]"
     }
   ]
 }

@@ -4,15 +4,17 @@
     <router-link :to="{ name: 'Games' }">Games</router-link>
     <router-link :to="{ name: 'SignIn' }">SignIn</router-link>
     <router-link :to="{ name: 'SignUp' }">SignUp</router-link> |
-    <router-link :to="{ name: 'About' }">About</router-link>
+    <router-link :to="{ name: 'About' }">About</router-link> |
+    <LoggedUser />
   </div>
   <router-view />
 </template>
 
 <script>
+import LoggedUser from "./components/LoggedUser.vue";
 export default {
   name: "App",
-  components: {},
+  components: { LoggedUser },
 };
 </script>
 

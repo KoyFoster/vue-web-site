@@ -1,13 +1,12 @@
 <template>
-  <h1>Sign In Page</h1>
+  <SignIn />
 </template>
 
 <script>
+import SignIn from "../components/SignIn.vue";
 export default {
-
-}
+  components: { SignIn },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

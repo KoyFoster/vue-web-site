@@ -1,0 +1,15 @@
+Site Name: Games Nonstop
+Desc: Basic website for running JavaScript games
+1. Structure
+ a. Header: Home|Games, Sign In, Sign Up | About | [Logged in status]
+ b. Home Page
+  i. What can this page offer?
+ c. Games Page
+  i. Game
+   - Sudoku
+- Reaction Game
+   - Platformer
+ d. Sign In
+ e. Sign Up
+ f. About Page
+  i. What can this page offer?

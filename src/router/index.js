@@ -21,6 +21,7 @@ const routes = [
     path: "/Games/:id",
     name: "Game",
     component: GameView,
+    props: true,
   },
   {
     path: "/SignIn",
