@@ -1,16 +1,17 @@
 import { ref } from "vue";
 
+// Note: If error results in Bad Request, verify the correct properties are being pass and that it's being converted stringified
 const POST = (url, body) => {
-  const options = {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: body ? JSON.stringify(body) : undefined,
-  };
   const data = ref([]);
   const error = ref(null);
   const requesting = ref(false);
 
-  const load = async () => {
+  const load = async (bodyBypass) => {
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: bodyBypass ? JSON.stringify(bodyBypass) : body ? JSON.stringify(body) : undefined,
+    };
     try {
       requesting.value = true;
       const resp = await fetch(url, options);

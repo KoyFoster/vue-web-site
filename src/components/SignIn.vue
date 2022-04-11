@@ -4,46 +4,49 @@
     <label>Email: </label><input type="email" required v-model="email" />
     <label>Password: </label
     ><input type="password" required v-model="password" />
-    <p class="error">{{ passwordError }}</p>
+    <p class="error">{{ error }}</p>
 
     <div class="submit">
       <button type="submit" v :disabled="!email || !password">Sign In</button>
     </div>
   </form>
+  Data: {{ data }}
 </template>
 
 <script>
+import postSignIn from "@/composables/posts/postSignIn";
+import { ref } from "@vue/reactivity";
 export default {
-  data() {
-    return {
-      email: "",
-      password: "",
-      terms: false,
+  setup() {
+    const email = ref("");
+    const password = ref("");
+    const data = ref("");
+    const error = ref("");
+    const requesting = ref("");
 
-      // errors
-      passwordError: null,
-    };
-  },
-
-  methods: {
-    handleSubmit() {
+    const handleSubmit = () => {
       console.warn("handleSubmit");
-      // validations
-      // pwd
-      this.password.length <= 5
-        ? (this.passwordError =
-            "This password must be more then 5 characters long")
-        : (this.passwordError = null);
 
-      if (this.passwordError) return;
-      console.warn({
-        email: this.email,
-        password: this.password,
-        role: this.role,
-        skills: this.skills,
-        terms: this.terms,
-      });
-    },
+      const post = postSignIn(email.value, password.value);
+      // 0. request token
+      post.load({ email: "test", password: "test" });
+      requesting.value = true;
+
+      // 1. on success
+      if (!post.error) {
+        requesting.value = false;
+        error.value = post.error;
+        // a. save token to local storage
+        localStorage.setItem("user", JSON.stringify(post.data));
+        // b. hide signin and signup pages on the App view
+        // c. and go to home page
+      } else {
+        requesting.value = false;
+        data.value = post.data;
+      }
+    };
+
+    return { email, password, data, error, requesting, handleSubmit };
   },
 };
 </script>
