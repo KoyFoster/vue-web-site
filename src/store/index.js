@@ -8,11 +8,11 @@ const store = createStore({
   },
   mutations: {
     saveUser(state, options) {
+      console.log('user:', options.user)
       state.user = options.user;
     },
     logout(state) {
       state.user = null;
-      console.log('logout:', state);
     },
   },
   getters: {

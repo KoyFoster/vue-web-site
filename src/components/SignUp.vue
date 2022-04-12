@@ -18,6 +18,9 @@
 </template>
 
 <script>
+import store from '@/store';
+import router from '@/router';
+import { onMounted } from '@vue/runtime-core';
 export default {
   data() {
     return {
@@ -49,6 +52,17 @@ export default {
         terms: this.terms,
       });
     },
+  },
+
+  setup() {
+    const redirect = () => {
+      router.push({ name: "Home" });
+    };
+
+    // on mount check if logged in and then redirect back to home
+    onMounted(() => {
+      if (store.getters.userName !== null) redirect();
+    });
   },
 };
 </script>

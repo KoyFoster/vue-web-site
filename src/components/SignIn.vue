@@ -16,32 +16,37 @@
 import postSignIn from "@/composables/posts/postSignIn";
 import { ref } from "@vue/reactivity";
 import store from "@/store";
+import router from "@/router";
+import { onMounted } from "@vue/runtime-core";
 export default {
   methods: {},
   setup() {
+    const redirect = () => {
+      router.push({ name: "Home" });
+    };
+
+    // on mount check if logged in and then redirect back to home
+    onMounted(() => {
+      if (store.getters.userName !== null) redirect();
+    });
+
     const email = ref("");
     const password = ref("");
-    const data = ref("");
-    const error = ref("");
-    const requesting = ref("");
+    const { data, error, load, requesting } = postSignIn();
 
     const handleSubmit = async () => {
-      const post = postSignIn(email.value, password.value);
       // 0. request token
-      await post.load({ email: "test@test", password: "test" });
-      requesting.value = true;
+      await load({ email: email.value, password: password.value });
 
       // 1. on success
-      if (post.error !== null) {
-        requesting.value = false;
-        data.value = post.data;
+      if (error.value === null) {
         // a. save token to local storage
-        store.commit("saveUser", { user: JSON.stringify(post.data.value) });
         // b. hide signin and signup pages on the App view
+        store.commit("saveUser", { user: JSON.stringify(data.value) });
         // c. and go to home page
+        redirect();
       } else {
-        error.value = post.error;
-        requesting.value = false;
+        error.value = "Username or password does not match.";
       }
     };
 

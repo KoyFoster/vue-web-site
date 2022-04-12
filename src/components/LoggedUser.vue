@@ -2,7 +2,7 @@
   <button class="logged-user" v-if="getUserName" @click="logout">
     {{ getUserName }}
   </button>
-  <button class="logged-user" v-else>[Sign In/Sign Up]</button>
+  <button class="logged-user" v-else>[Not signed in]</button>
 </template>
 
 <script>
@@ -15,7 +15,6 @@ export default {
   },
   methods: {
     logout() {
-      console.log("logout");
       store.commit("logout");
     },
   },

@@ -16,13 +16,13 @@ const POST = (url, body) => {
         ? JSON.stringify(body)
         : undefined,
     };
-    
+
     try {
       requesting.value = true;
       const resp = await fetch(url, options);
       if (!resp.ok) {
         requesting.value = false;
-        throw Error("Game not available");
+        throw Error("Post failed");
       } else {
         data.value = await resp.json();
         requesting.value = false;
