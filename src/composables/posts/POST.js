@@ -10,8 +10,13 @@ const POST = (url, body) => {
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: bodyBypass ? JSON.stringify(bodyBypass) : body ? JSON.stringify(body) : undefined,
+      body: bodyBypass
+        ? JSON.stringify(bodyBypass)
+        : body
+        ? JSON.stringify(body)
+        : undefined,
     };
+    
     try {
       requesting.value = true;
       const resp = await fetch(url, options);
@@ -23,7 +28,7 @@ const POST = (url, body) => {
         requesting.value = false;
       }
     } catch (err) {
-      error.value = err.message;
+      error.value = `${err.message}: ${options.body}`;
       requesting.value = false;
     }
   };

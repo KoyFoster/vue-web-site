@@ -6,17 +6,18 @@
     ><input type="password" required v-model="password" />
     <p class="error">{{ error }}</p>
 
-    <div class="submit">
+    <div v-if="!requesting" class="submit">
       <button type="submit" v :disabled="!email || !password">Sign In</button>
     </div>
   </form>
-  Data: {{ data }}
 </template>
 
 <script>
 import postSignIn from "@/composables/posts/postSignIn";
 import { ref } from "@vue/reactivity";
+import store from "@/store";
 export default {
+  methods: {},
   setup() {
     const email = ref("");
     const password = ref("");
@@ -24,25 +25,23 @@ export default {
     const error = ref("");
     const requesting = ref("");
 
-    const handleSubmit = () => {
-      console.warn("handleSubmit");
-
+    const handleSubmit = async () => {
       const post = postSignIn(email.value, password.value);
       // 0. request token
-      post.load({ email: "test", password: "test" });
+      await post.load({ email: "test@test", password: "test" });
       requesting.value = true;
 
       // 1. on success
-      if (!post.error) {
+      if (post.error !== null) {
         requesting.value = false;
-        error.value = post.error;
+        data.value = post.data;
         // a. save token to local storage
-        localStorage.setItem("user", JSON.stringify(post.data));
+        store.commit("saveUser", { user: JSON.stringify(post.data.value) });
         // b. hide signin and signup pages on the App view
         // c. and go to home page
       } else {
+        error.value = post.error;
         requesting.value = false;
-        data.value = post.data;
       }
     };
 

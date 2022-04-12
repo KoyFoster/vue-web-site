@@ -2,8 +2,8 @@
   <div class="" id="nav">
     <router-link :to="{ name: 'Home' }">Home</router-link> |
     <router-link :to="{ name: 'Games' }">Games</router-link>
-    <router-link v-if="showSigns" :to="{ name: 'SignIn' }">SignIn</router-link>
-    <router-link v-if="showSigns" :to="{ name: 'SignUp' }">SignUp</router-link>
+    <router-link v-if="!loggedIn" :to="{ name: 'SignIn' }">SignIn</router-link>
+    <router-link v-if="!loggedIn" :to="{ name: 'SignUp' }">SignUp</router-link>
     | <router-link :to="{ name: 'About' }">About</router-link> |
     <LoggedUser />
   </div>
@@ -11,19 +11,17 @@
 </template>
 
 <script>
-import { ref } from "@vue/reactivity";
 import LoggedUser from "./components/LoggedUser.vue";
+import store from "./store";
 export default {
   name: "App",
   components: { LoggedUser },
-  setup() {
-        localStorage.setItem("name", 'butts');
-    const user = localStorage.user;
-    const showSigns = ref(!user);
-    console.log('butts:', localStorage.name);
-
-    return { showSigns };
+  computed: {
+    loggedIn() {
+      return store.getters.loggedIn;
+    },
   },
+  setup() {},
 };
 </script>
 

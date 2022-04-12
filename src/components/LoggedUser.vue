@@ -1,11 +1,24 @@
 <template>
-  <button class="logged-user" v-if="user">{{ user.name }}</button>
+  <button class="logged-user" v-if="getUserName" @click="logout">
+    {{ getUserName }}
+  </button>
   <button class="logged-user" v-else>[Sign In/Sign Up]</button>
 </template>
 
 <script>
+import store from "@/store";
 export default {
-  props: ["user"],
+  computed: {
+    getUserName() {
+      return store.getters.userName ? `@${store.getters.userName}` : null;
+    },
+  },
+  methods: {
+    logout() {
+      console.log("logout");
+      store.commit("logout");
+    },
+  },
 };
 </script>
 
