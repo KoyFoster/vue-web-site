@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import postSignIn from "@/composables/posts/postSignIn";
+import { userService } from "@/services/user.services";
 import { ref } from "@vue/reactivity";
 import store from "@/store";
 import router from "@/router";
@@ -21,36 +21,28 @@ import { onMounted } from "@vue/runtime-core";
 export default {
   methods: {},
   setup() {
-    const redirect = () => {
-      router.push({ name: "Home" });
-    };
-
     // on mount check if logged in and then redirect back to home
     onMounted(() => {
       if (store.getters.userName !== null) redirect();
     });
+    function redirect() {
+      router.push({ name: "Home" });
+    }
 
     const email = ref("");
     const password = ref("");
-    const { data, error, load, requesting } = postSignIn();
 
+    const { error, load, requesting } = userService.login();
     const handleSubmit = async () => {
-      // 0. request token
-      await load({ email: email.value, password: password.value });
+      load(email.value, password.value);
 
       // 1. on success
-      if (error.value === null) {
-        // a. save token to local storage
-        // b. hide signin and signup pages on the App view
-        store.commit("saveUser", { user: JSON.stringify(data.value) });
-        // c. and go to home page
-        redirect();
-      } else {
+      if (error.value !== null) {
         error.value = "Username or password does not match.";
       }
     };
 
-    return { email, password, data, error, requesting, handleSubmit };
+    return { email, password, error, requesting, handleSubmit };
   },
 };
 </script>

@@ -2,29 +2,52 @@ import { createStore } from "vuex";
 
 const store = createStore({
   state() {
+    const user = JSON.parse(localStorage.getItem("user"));
+
+    console.log("user:", user);
     return {
-      user: null,
+      user: user ? user : null,
+      buffer: "Nothing",
     };
   },
+
   mutations: {
     saveUser(state, options) {
-      console.log('user:', options.user)
       state.user = options.user;
+      localStorage.setItem("user", JSON.stringify(options.user));
     },
     logout(state) {
       state.user = null;
+      localStorage.removeItem("user");
+    },
+    randNum(state) {
+      state.buffer = Math.random();
     },
   },
+
+  // used for any asynchronous tasks
+  // should be used for anything in general
+  actions: {
+    delayedCall: (context) => {
+      setTimeout(function () {
+        context.commit("randNum");
+      }, 2000);
+    },
+    saveUser: (context, options) => {
+      context.commit("saveUser", options);
+    },
+  },
+
   getters: {
     loggedIn(state) {
       return state.user !== null ? true : false;
     },
     userName: (state) => {
-      let userName = null;
-      if (state.user !== null) userName = JSON.parse(state.user).username;
-      return userName;
+      return state.user ? state.user.username : null;
     },
   },
+
+  // mapping
 });
 
 export default store;
