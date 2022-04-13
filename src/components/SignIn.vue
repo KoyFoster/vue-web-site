@@ -26,7 +26,7 @@ export default {
       if (store.getters.userName !== null) redirect();
     });
     function redirect() {
-      router.push({ name: "Home" });
+      router.push({ name: "Games" });
     }
 
     const email = ref("");
@@ -34,11 +34,14 @@ export default {
 
     const { error, load, requesting } = userService.login();
     const handleSubmit = async () => {
-      load(email.value, password.value);
+      error.value = null;
+      await load(email.value, password.value);
 
       // 1. on success
       if (error.value !== null) {
         error.value = "Username or password does not match.";
+      } else {
+        redirect();
       }
     };
 
