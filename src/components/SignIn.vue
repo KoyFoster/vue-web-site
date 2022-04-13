@@ -1,13 +1,15 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <h1>Sign In</h1>
-    <label>Email: </label><input type="email" required v-model="email" />
+    <label>User Name: </label><input type="text" required v-model="username" />
     <label>Password: </label
     ><input type="password" required v-model="password" />
     <p class="error">{{ error }}</p>
 
     <div v-if="!requesting" class="submit">
-      <button type="submit" v :disabled="!email || !password">Sign In</button>
+      <button type="submit" v :disabled="!username || !password">
+        Sign In
+      </button>
     </div>
   </form>
 </template>
@@ -30,12 +32,13 @@ export default {
     }
 
     const email = ref("");
+    const username = ref("");
     const password = ref("");
 
     const { error, load, requesting } = userService.login();
     const handleSubmit = async () => {
       error.value = null;
-      await load(email.value, password.value);
+      await load(username.value, email.value, password.value);
 
       // 1. on success
       if (error.value !== null) {
@@ -45,12 +48,15 @@ export default {
       }
     };
 
-    return { email, password, error, requesting, handleSubmit };
+    return { username, email, password, error, requesting, handleSubmit };
   },
 };
 </script>
 
 <style>
+.login-type-container {
+  display: flex;
+}
 form {
   max-width: 420px;
   margin: 30px auto;
