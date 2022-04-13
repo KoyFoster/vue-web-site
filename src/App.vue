@@ -1,10 +1,10 @@
 <template>
   <div class="" id="nav">
-    <router-link :to="{ name: 'Home' }">Home</router-link> |
+    <!-- <router-link :to="{ name: 'Home' }">Home</router-link> | -->
     <router-link :to="{ name: 'Games' }">Games</router-link>
     <router-link v-if="!loggedIn" :to="{ name: 'SignIn' }">SignIn</router-link>
     <router-link v-if="!loggedIn" :to="{ name: 'SignUp' }">SignUp</router-link>
-    | <router-link :to="{ name: 'About' }">About</router-link> |
+    <!-- | <router-link :to="{ name: 'About' }">About</router-link> | -->
     <LoggedUser />
   </div>
   <router-view />
