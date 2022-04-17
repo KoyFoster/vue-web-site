@@ -2,15 +2,14 @@ import POST from "@/composables/posts/POST";
 import store from "@/store";
 
 const login = () => {
-  const url = "http://localhost:4000/users/authenticate"; // calling local REST API ATM // `${process.env.REACT_APP_API_ENDPOINT}/users/authenticate`
+  const url = `${process.env.VUE_APP_BASE_URL}/signin`;
   const { data, error, load, requesting } = POST(url);
 
-  const loginLoad = async (username, email, password) => {
-    if (!(!email && !username) || !password)
-      console.warn("Warning: No email/username or password given");
+  const loginLoad = async (username, password) => {
+    if (!username || !password)
+      console.warn("Warning: No username or password given");
     await load({
-      username: username ? username : "Empty",
-      email: email ? email : "Empty",
+      username,
       password,
     });
     if (error.value === null) store.commit("saveUser", { user: data.value });
@@ -20,13 +19,16 @@ const login = () => {
 };
 
 const signup = () => {
-  const url = "http://localhost:4000/users/signup";
+  const url = `${process.env.VUE_APP_BASE_URL}/signup`;
   const { data, error, load, requesting } = POST(url);
 
-  const loginLoad = async (username, email, password) => {
-    if (!(!email && !username) || !password)
-      console.warn("Warning: No email/username or password given");
-    await load({ username, email, password });
+  const loginLoad = async (username, password) => {
+    if (!username || !password)
+      console.warn("Warning: No username or password given");
+    await load({
+      username,
+      password,
+    });
     // if (error.value === null) store.commit("saveUser", { user: data.value });
   };
 

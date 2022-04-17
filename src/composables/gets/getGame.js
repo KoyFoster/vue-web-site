@@ -1,7 +1,7 @@
 import GET from "./GET";
 
 const getGame = (id) => {
-  const url = `http://localhost:3000/Games/${id}`;
+  const url = `${process.env.VUE_APP_BASE_URL}/Games/${id}`;
 
   const { data, error, load, requesting } = GET(url);
 

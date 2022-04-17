@@ -5,7 +5,7 @@
       <router-link
         class="game"
         :to="{ name: 'Game', params: { id: game.id } }"
-        >{{ game.name }}</router-link
+        >{{ game.title }}</router-link
       >
     </div>
   </div>

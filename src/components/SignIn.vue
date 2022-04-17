@@ -38,7 +38,7 @@ export default {
     const { error, load, requesting } = userService.login();
     const handleSubmit = async () => {
       error.value = null;
-      await load(username.value, email.value, password.value);
+      await load(username.value, password.value);
 
       // 1. on success
       if (error.value !== null) {

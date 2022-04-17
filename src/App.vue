@@ -5,17 +5,17 @@
     <router-link v-if="!loggedIn" :to="{ name: 'SignIn' }">SignIn</router-link>
     <router-link v-if="!loggedIn" :to="{ name: 'SignUp' }">SignUp</router-link>
     <!-- | <router-link :to="{ name: 'About' }">About</router-link> | -->
-    <LoggedUser />
+    <SignedUser />
   </div>
   <router-view />
 </template>
 
 <script>
-import LoggedUser from "./components/LoggedUser.vue";
+import SignedUser from "./components/SignedUser.vue";
 import store from "./store";
 export default {
   name: "App",
-  components: { LoggedUser },
+  components: { SignedUser },
   computed: {
     loggedIn() {
       return store.getters.loggedIn;
