@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import getGames from "@/composables/gets/getGames";
+import { gameService } from "@/services/game.services";
 
 export default {
   setup() {
-    const { data, error, load, requesting } = getGames();
+    const { data, error, load, requesting } = gameService.getGames();
 
     load();
 

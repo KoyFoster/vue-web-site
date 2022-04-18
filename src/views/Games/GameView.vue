@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import getGame from "@/composables/gets/getGame";
+import { gameService } from "@/services/game.services";
 export default {
   props: ["id"],
   setup(props) {
-    const { data, error, load, requesting } = getGame(props.id);
+    const { data, error, load, requesting } = gameService.getGame(props.id);
 
     load();
 
