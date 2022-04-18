@@ -1,22 +1,11 @@
 import axios from "axios";
 import { ref } from "vue";
-import { DelayedCall } from "../timers/timers";
 
 // delay parameter is used to delay the api call by the given value in milliseconds
-const GET = (url, delay) => {
-  const timeId = ref(0);
+const GET = (url) => {
   const data = ref([]);
   const error = ref(null);
   const requesting = ref(false);
-
-  const delayLoad = async (newUrl = url) => {
-    requesting.value = true;
-    timeId.value = DelayedCall(async () => {
-      await load(newUrl);
-      clearTimeout(timeId.value);
-      timeId.value = 0;
-    }, delay);
-  };
 
   const load = async (newUrl = url) => {
     try {
@@ -36,7 +25,7 @@ const GET = (url, delay) => {
     }
   };
 
-  return { data, error, load: delay > 0 ? delayLoad : load, requesting };
+  return { data, error, load, requesting };
 };
 
 export default GET;
