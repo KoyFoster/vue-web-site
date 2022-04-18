@@ -1,19 +1,33 @@
+import axios from "axios";
 import { ref } from "vue";
+import { DelayedCall } from "../timers/timers";
 
-const GET = (url) => {
+// delay parameter is used to delay the api call by the given value in milliseconds
+const GET = (url, delay) => {
+  const timeId = ref(0);
   const data = ref([]);
   const error = ref(null);
   const requesting = ref(false);
 
-  const load = async () => {
+  const delayLoad = async (newUrl = url) => {
+    requesting.value = true;
+    timeId.value = DelayedCall(async () => {
+      await load(newUrl);
+      clearTimeout(timeId.value);
+      timeId.value = 0;
+    }, delay);
+  };
+
+  const load = async (newUrl = url) => {
     try {
       requesting.value = true;
-      const resp = await fetch(url);
-      if (!resp.ok) {
+
+      const resp = await axios.get(newUrl);
+      if (!resp.status) {
         requesting.value = false;
-        throw Error("Game not available");
+        throw Error("Games not available");
       } else {
-        data.value = await resp.json();
+        data.value = resp.data;
         requesting.value = false;
       }
     } catch (err) {
@@ -22,7 +36,7 @@ const GET = (url) => {
     }
   };
 
-  return { data, error, load, requesting };
+  return { data, error, load: delay > 0 ? delayLoad : load, requesting };
 };
 
 export default GET;
