@@ -1,9 +1,10 @@
+import GET from "@/composables/gets/GET";
 import POST from "@/composables/posts/POST";
 import store from "@/store";
 
 const signin = () => {
   const url = `${process.env.VUE_APP_BASE_URL}/signin`;
-  const { data, error, load, requesting } = POST(url);
+  const { data, error, load, requesting } = POST(url, 500);
 
   const loginLoad = async (username, password) => {
     if (!username || !password)
@@ -35,8 +36,25 @@ const signup = () => {
   return { data, error, load: loginLoad, requesting };
 };
 
+const nameexists = (username) => {
+  const url = `${process.env.VUE_APP_BASE_URL}/UE/?name=${username}`;
+
+  const { data, error, load, requesting } = GET(url, 400);
+
+  return {
+    data,
+    error,
+    load: (username) => {
+      const newUrl = `${process.env.VUE_APP_BASE_URL}/UE/?name=${username}`;
+      load(newUrl);
+    },
+    requesting,
+  };
+};
+
 export const userService = {
   signin,
   signup,
+  nameexists,
   // logout,
 };
