@@ -1,7 +1,7 @@
 import POST from "@/composables/posts/POST";
 import store from "@/store";
 
-const login = () => {
+const signin = () => {
   const url = `${process.env.VUE_APP_BASE_URL}/signin`;
   const { data, error, load, requesting } = POST(url);
 
@@ -29,14 +29,14 @@ const signup = () => {
       username,
       password,
     });
-    // if (error.value === null) store.commit("saveUser", { user: data.value });
+    if (error.value === null) store.commit("saveUser", { user: data.value });
   };
 
   return { data, error, load: loginLoad, requesting };
 };
 
 export const userService = {
-  login,
+  signin,
   signup,
   // logout,
 };

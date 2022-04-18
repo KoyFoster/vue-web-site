@@ -1,7 +1,8 @@
 <template>
   <form @submit.prevent="handleSubmit">
     <h1>Sign Up</h1>
-    <label>Email: </label><input type="email" required v-model="email" />
+    <label>Username: </label
+    ><input type="username" required v-model="username" />
     <label>Password: </label
     ><input type="password" required v-model="password" />
     <p class="error">{{ passwordError }}</p>
@@ -11,58 +12,53 @@
       <label>Accept terms and conditions</label>
     </div>
 
-    <button type="submit" v :disabled="!email || !password">
+    <button type="submit" v :disabled="!username || !password">
       Create Account
     </button>
   </form>
 </template>
 
 <script>
-import store from '@/store';
-import router from '@/router';
-import { onMounted } from '@vue/runtime-core';
+import store from "@/store";
+import router from "@/router";
+import { onMounted, ref } from "@vue/runtime-core";
+import { userService } from '@/services/user.services';
 export default {
   data() {
     return {
-      email: "",
-      password: "",
-      terms: false,
 
       // errors
       passwordError: null,
     };
   },
 
-  methods: {
-    handleSubmit() {
-      console.warn("handleSubmit");
-      // validations
-      // pwd
-      this.password.length <= 5
-        ? (this.passwordError =
-            "This password must be more then 5 characters long")
-        : (this.passwordError = null);
-
-      if (this.passwordError) return;
-      console.warn({
-        email: this.email,
-        password: this.password,
-        role: this.role,
-        skills: this.skills,
-        terms: this.terms,
-      });
-    },
-  },
-
   setup() {
-    const redirect = () => {
-      router.push({ name: "Home" });
-    };
-
     // on mount check if logged in and then redirect back to home
     onMounted(() => {
       if (store.getters.userName !== null) redirect();
     });
+    function redirect() {
+      router.push({ name: "Games" });
+    }
+
+    const username = ref("");
+    const password = ref("");
+    const terms = ref("");
+
+    const { error, load, requesting } = userService.signup();
+    const handleSubmit = async () => {
+      error.value = null;
+      await load(username.value, password.value);
+
+      // 1. on success
+      if (error.value !== null) {
+        error.value = "Username or password does not match.";
+      } else {
+        redirect();
+      }
+    };
+
+    return { username, password, terms, error, requesting, handleSubmit };
   },
 };
 </script>

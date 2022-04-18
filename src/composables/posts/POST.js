@@ -25,7 +25,6 @@ const POST = (url) => {
       }
     } catch (err) {
       error.value = `${err.message}: ${options.body}`;
-      console.error("POST:", error.value, options);
       requesting.value = false;
     }
   };

@@ -35,7 +35,7 @@ export default {
     const username = ref("");
     const password = ref("");
 
-    const { error, load, requesting } = userService.login();
+    const { error, load, requesting } = userService.signin();
     const handleSubmit = async () => {
       error.value = null;
       await load(username.value, password.value);
@@ -54,7 +54,7 @@ export default {
 </script>
 
 <style>
-.login-type-container {
+.signin-type-container {
   display: flex;
 }
 form {
